@@ -34,7 +34,7 @@ public class OfficeTest {
 	@Test
 	public void testLogin() {
 		
-		o = new Office();
+		o = new Office(ur,br);
 		
 		User u = new User("Bob", "p4ssw0rd", null);
 		

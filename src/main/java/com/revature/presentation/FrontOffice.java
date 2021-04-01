@@ -12,6 +12,10 @@ public class FrontOffice implements PresentationLayer {
 	
 	ServiceLayer sLayer;
 	
+	public FrontOffice(ServiceLayer office) {
+		this.sLayer = office;
+	}
+
 	public void displayMenu() {
 		
 		System.out.println("Welcome to my Library!");

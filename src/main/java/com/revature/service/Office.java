@@ -15,6 +15,11 @@ public class Office implements ServiceLayer {
 	
 	UserRepo yellowBook;
 
+	public Office(UserRepo ur, BookRepo br) {
+		this.stockRoom = br;
+		this.yellowBook = ur;
+	}
+
 	@Override
 	public boolean login(String username, String password) {
 		// TODO Auto-generated method stub

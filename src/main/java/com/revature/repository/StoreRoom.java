@@ -8,6 +8,10 @@ public class StoreRoom implements BookRepo{
 	
 	//hardcoding database
 	private Set<Book> libraryBooks;
+	
+	public StoreRoom(Set<Book> hardCodedBooks) {
+		this.libraryBooks = hardCodedBooks;
+	}
 
 	@Override
 	public Book getBookByName() {

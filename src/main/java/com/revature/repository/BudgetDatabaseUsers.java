@@ -6,6 +6,12 @@ import com.revature.models.Book;
 import com.revature.models.User;
 
 public class BudgetDatabaseUsers implements UserRepo {
+	
+	Set<User> userSet;
+	
+	public BudgetDatabaseUsers(Set<User> hardCodedUsers) {
+		this.userSet = hardCodedUsers;
+	}
 
 	@Override
 	public User getUserByUserName(String username) {
