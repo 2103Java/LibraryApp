@@ -21,9 +21,13 @@ public class Office implements ServiceLayer {
 	}
 
 	@Override
-	public boolean login(String username, String password) {
+	public boolean login(String username, String password)
+	{
+		User user = this.yellowBook.getUserByUserName(username);
+
 		// TODO Auto-generated method stub
-		return true;
+
+		return (user != null) && user.getPassword().equals(password);
 	}
 
 	@Override
@@ -40,7 +44,8 @@ public class Office implements ServiceLayer {
 
 	@Override
 	public boolean withdraw(User loggedInUser, String chosenBook)
-			throws BookDoesNotExistException, TooManyBooksAlreadyWithdrawnException {
+			throws BookDoesNotExistException, TooManyBooksAlreadyWithdrawnException
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}

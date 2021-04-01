@@ -14,7 +14,15 @@ public class BudgetDatabaseUsers implements UserRepo {
 	}
 
 	@Override
-	public User getUserByUserName(String username) {
+	public User getUserByUserName(String username)
+	{
+		for(User user: this.userSet)
+		{
+			if (user.getUsername().equals(username))
+			{
+				return user;
+			}
+		}
 		// TODO Auto-generated method stub
 		return null;
 	}

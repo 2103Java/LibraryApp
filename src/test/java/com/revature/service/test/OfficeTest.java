@@ -29,19 +29,20 @@ public class OfficeTest {
 	
 	@Mock
 	private UserRepo ur;
-	
+
+
 	private Office o;
 
 	
 	@Test
 	public void testLogin() {
-		
-		o = new Office(ur,br);
-		
+
 		User u = new User("Bob", "p4ssw0rd", null);
 		
 		ur = mock(UserRepo.class);
-		
+
+		o = new Office(ur,br);
+
 		when(ur.getUserByUserName("Bob")).thenReturn(u);
 		
 		
