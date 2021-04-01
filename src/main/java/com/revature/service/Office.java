@@ -46,8 +46,9 @@ public class Office implements ServiceLayer {
 	}
 
 	@Override
-	public void deposit(User loggedInUser, String depositBook) {
+	public boolean deposit(User loggedInUser, String depositBook) {
 		// TODO Auto-generated method stub
+		return true;
 
 	}
 

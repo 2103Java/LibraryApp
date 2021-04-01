@@ -13,6 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import com.revature.exceptions.BookDoesNotExistException;
 import com.revature.exceptions.TooManyBooksAlreadyWithdrawnException;
 import com.revature.models.Book;
 import com.revature.models.User;
@@ -31,7 +32,7 @@ public class OfficeTest {
 	private Office o;
 
 	
-	@Test
+	@Ignore
 	public void testLogin() {
 		
 		o = new Office(ur,br);
@@ -94,6 +95,73 @@ public class OfficeTest {
 		 * 	User has 1 more book, changes the size of user.getBooks().size();
 		 */
 		
+
+		o = new Office(ur,br);
+
+		User u = new User("Ben", "password", null);		
+		ur = mock(UserRepo.class);
+		when(ur.getUserByUserName("Ben")).thenReturn(u);
+		
+		
+		Set<Book> fakeSet = new HashSet<>();
+		Book f1 = new Book(0,"Fake1","FAkeAuthor1",true);
+		Book f2 = new Book(0,"Fake2","FAkeAuthor2",false);
+		Book f3 = new Book(0,"Fake3","FAkeAuthor3",false);
+		Book f4 = new Book(0,"Fake4","FAkeAuthor3",true);
+		Book f5 = new Book(0,"Fake5","FAkeAuthor4",true);
+		
+		fakeSet.add(f1);
+		fakeSet.add(f2);
+		fakeSet.add(f3);
+		fakeSet.add(f4);
+		fakeSet.add(f5);
+		
+		Set<Book> userBooks = new HashSet<>();
+		userBooks.add(f1);
+		userBooks.add(f4);
+		userBooks.add(f5);
+		
+		when(u.getMyBooks()).thenReturn(userBooks);
+		
+		// Test if Book's isCheckOut property is set to true after being checked out;
+		try {
+			o.withdraw(u, "Fake2");
+		} catch (TooManyBooksAlreadyWithdrawnException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BookDoesNotExistException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertTrue(f2.isCheckedOut());
+		
+		
+		// Test if withdraw() returns false after attempting to
+		// checkout a book that is already marked as checked out;
+		try {
+			assertFalse(o.withdraw(u, "Fake1"));
+		} catch (TooManyBooksAlreadyWithdrawnException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BookDoesNotExistException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Assert that withdraw() returns false if a user with 3 books out attempts to withdraw another
+		try {
+			o.withdraw(u, "Fake1");
+		} catch (TooManyBooksAlreadyWithdrawnException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BookDoesNotExistException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertEquals(3, fakeSet.size());
+		assertEquals(1, u.getMyBooks().size());
+
 	}
 	
 	@Test(expected = TooManyBooksAlreadyWithdrawnException.class)
@@ -103,7 +171,50 @@ public class OfficeTest {
 		
 	}
 	
+	
+	
 	public void testDeposit() {
+		
+		o = new Office(ur,br);
+
+		User u = new User("Ben", "password", null);		
+		ur = mock(UserRepo.class);
+		when(ur.getUserByUserName("Ben")).thenReturn(u);
+		
+		
+		Set<Book> fakeSet = new HashSet<>();
+		Book f1 = new Book(0,"Fake1","FAkeAuthor1",true);
+		Book f2 = new Book(0,"Fake2","FAkeAuthor2",false);
+		Book f3 = new Book(0,"Fake3","FAkeAuthor3",false);
+		Book f4 = new Book(0,"Fake4","FAkeAuthor3",true);
+		Book f5 = new Book(0,"Fake5","FAkeAuthor4",true);
+		Book f6 = new Book(0,"Fake6","FAkeAuthor6",true);
+		
+		fakeSet.add(f1);
+		fakeSet.add(f2);
+		fakeSet.add(f3);
+		fakeSet.add(f4);
+		fakeSet.add(f5);
+		
+		Set<Book> userBooks = new HashSet<>();
+		userBooks.add(f1);
+		userBooks.add(f4);
+		userBooks.add(f5);
+		
+		when(u.getMyBooks()).thenReturn(userBooks);
+		
+
+		// Check that a book is not marked as checked out after depositing it
+		o.deposit(u, "Fake1");
+		assertFalse(f2.isCheckedOut());
+		
+		// Check that a book that is not checked out can't be deposited (returns false)
+		assertFalse(o.deposit(u, "Fake2"));
+		
+		// Check that a book a user doesn't have can't be deposited by them (returns false)
+		assertFalse(o.deposit(u, "Fake6"));
+
+		
 		
 	}
 }
