@@ -15,7 +15,7 @@ public class BudgetDatabaseUsers implements UserRepo {
 
 	@Override
 	public User getUserByUserName(String username) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
