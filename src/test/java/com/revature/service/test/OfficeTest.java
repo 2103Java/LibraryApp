@@ -49,10 +49,16 @@ public class OfficeTest {
 		
 		
 	}
-	
+  // created user does not exist exception and added to exceptions folder
+  @Test(expected = UserDoesNotExistException.class)
 	public void testGetUser() {
-		
+
+		User u = new User("Bob", "p4ssw0rd", null);
+
+	  assertEquals("Bob", ur.getUserByUserName("Bob"));
 	}
+
+
 	
 	@Ignore //feature has been depcreated!
 	public void testGetAvailableBooks() {
@@ -134,7 +140,11 @@ public class OfficeTest {
 		assertTrue(f3.isCheckedOut);
 	}
 
-  @Test(expected = TooManyBooksAlreadyWithdrawnException.class)
+  @Test(expected = BookDoesNotExistException.class)
+	public void testWithdrawException(){
+
+
+	}
 	
 	@Test(expected = TooManyBooksAlreadyWithdrawnException.class)
 	public void testTooManyBooks() {
