@@ -39,7 +39,7 @@ public class OfficeTest {
 	private Office o;
 
 	
-	@Ignore
+  @Test
 	public void testLogin() {
 		
 		o = new Office(ur,br);
