@@ -33,11 +33,11 @@ public class OfficeTest {
 	
 	@Test
 	public void testLogin() {
-		
+
 		o = new Office(ur,br);
-		
+
 		User u = new User("Bob", "p4ssw0rd", null);
-		
+
 		ur = mock(UserRepo.class);
 		
 		when(ur.getUserByUserName("Bob")).thenReturn(u);
@@ -49,9 +49,18 @@ public class OfficeTest {
 		
 		
 	}
-	
+	@Test
 	public void testGetUser() {
-		
+		//Creating Office for testing
+		o = new Office(ur,br);
+		//Creating users for testing
+		User u = new User("bill", "Pass", null);
+		User u2 = new User("Tom", "Bo", null);
+		//Testing that existing users return true
+		assertEquals(u, o.getUser("bill"));
+		//Testing that non existing users return false
+		assertNotEquals(u2, o.getUser("Sausage"));
+
 	}
 	
 	@Ignore //feature has been depcreated!
@@ -93,7 +102,37 @@ public class OfficeTest {
 		 * 	Changes the size of the availablebooks list 
 		 * 	User has 1 more book, changes the size of user.getBooks().size();
 		 */
-		
+		//creating an office for testing
+		o = new Office(ur, br);
+		//creating books to place in set
+		Book f1 = new Book(0,"Fake1","FAkeAuthor1",true);
+		Book f2 = new Book(0,"Fake2","FAkeAuthor2",true);
+		Book f3 = new Book(0,"Fake3","FAkeAuthor1",false);
+		Book f4 = new Book(0,"Fake4","FAkeAuthor1",false);
+		Book f5 = new Book(0,"Fake5","FAkeAuthor1",false);
+		//Creating Set of books that user has checked out
+		Set<Book> fakeSetOBooks = new HashSet<>();
+		fakeSetOBooks.add(f1);
+		fakeSetOBooks.add(f2);
+		//Creating user with set of checked out books
+		User u = new User("bill", "Pass", fakeSetOBooks);
+		//Creating Set for library
+		Set<Book> fakeLibrary = new HashSet<>();
+		fakeLibrary.add(f1);
+		fakeLibrary.add(f2);
+		fakeLibrary.add(f3);
+		fakeLibrary.add(f4);
+		fakeLibrary.add(f5);
+
+		/*
+		These tests assume o.withdraw() changes the library and the user's book set size. Along with the books "isCheckedOut" boolean.
+		 */
+
+		assertTrue(o.withdraw(u, "Fake3"));
+		assertFalse(o.withdraw(u,"Fake1"));
+		assertTrue(f3.isCheckedOut);
+		assertEquals(3, u.getMyBooks().size());
+		assertEquals(2, o.getAvailableBooks().size());
 	}
 	
 	@Test(expected = TooManyBooksAlreadyWithdrawnException.class)
@@ -104,6 +143,36 @@ public class OfficeTest {
 	}
 	
 	public void testDeposit() {
-		
+		//creating an office for testing
+		o = new Office(ur, br);
+		//creating books to place in set
+		Book f1 = new Book(0,"Fake1","FAkeAuthor1",true);
+		Book f2 = new Book(0,"Fake2","FAkeAuthor2",true);
+		Book f3 = new Book(0,"Fake3","FAkeAuthor1",false);
+		Book f4 = new Book(0,"Fake4","FAkeAuthor1",false);
+		Book f5 = new Book(0,"Fake5","FAkeAuthor1",false);
+		//Creating Set of books that user has checked out
+		Set<Book> fakeSetOBooks = new HashSet<>();
+		fakeSetOBooks.add(f1);
+		fakeSetOBooks.add(f2);
+		//Creating user with set of checked out books
+		User u = new User("bill", "Pass", fakeSetOBooks);
+		//Creating Set for library
+		Set<Book> fakeLibrary = new HashSet<>();
+		fakeLibrary.add(f1);
+		fakeLibrary.add(f2);
+		fakeLibrary.add(f3);
+		fakeLibrary.add(f4);
+		fakeLibrary.add(f5);
+
+		/*
+		These tests assume o.deposit() changes the library and the user's book set size. Along with the books "isCheckedOut" boolean.
+		 */
+
+		assertFalse(o.deposit(u, "Fake3"));
+		assertTrue(o.deposit(u,"Fake1"));
+		assertFalse(f3.isCheckedOut);
+		assertEquals(1, u.getMyBooks().size());
+		assertEquals(4, o.getAvailableBooks().size());
 	}
 }
