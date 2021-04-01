@@ -13,7 +13,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import com.revature.exceptions.BookDoesNotExistException;
 import com.revature.exceptions.TooManyBooksAlreadyWithdrawnException;
+import com.revature.exceptions.UserDoesNotExistException;
 import com.revature.models.Book;
 import com.revature.models.User;
 import com.revature.repository.BookRepo;
@@ -124,19 +126,24 @@ public class OfficeTest {
 		when(br.getBookByName("Fake1")).thenReturn(f1);
 
 		// user withdraws fake book
-		o.withdraw(u, "Fake1");
+		try {
+			o.withdraw(u, "Fake1");
 
-		// assert true if book exists and can be checked out
-		assertTrue(o.withdraw(u, "Fake2"));
+			// assert true if book exists and can be checked out
+			assertTrue(o.withdraw(u, "Fake2"));
 
-		// assert false if book does not exist
-		assertFalse(o.withdraw(u, "Fake100"));
+			// assert false if book does not exist
+			assertFalse(o.withdraw(u, "Fake100"));
 
-		// assert false if book exists but cannot be checked out
-		assertFalse(o.withdraw(u, "Fake1"));
+			// assert false if book exists but cannot be checked out
+			assertFalse(o.withdraw(u, "Fake1"));
 
-		// check if isCheckedOut changes to true after withdrawl
-		o.withdraw(u, "Fake3");
+			// check if isCheckedOut changes to true after withdrawl
+			o.withdraw(u, "Fake3");
+		}
+		catch (BookDoesNotExistException e) {
+			System.out.println("Book doesnot exist");
+		}
 		assertTrue(f3.isCheckedOut);
 	}
 

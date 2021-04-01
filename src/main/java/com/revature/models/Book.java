@@ -10,7 +10,7 @@ public class Book {
 	private int id;
 	private String name;
 	private String author;
-	private boolean isCheckedOut;
+	public boolean isCheckedOut;
 	
 	public Book() {
 		super();

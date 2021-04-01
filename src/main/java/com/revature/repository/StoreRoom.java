@@ -48,6 +48,12 @@ public class StoreRoom implements BookRepo{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public Book getBookByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

@@ -17,6 +17,8 @@ public interface BookRepo {
 	public boolean deleteBook(Book b);
 	
 	public boolean addBook(Book b);
+
+	public Book getBookByName();
 	
 	//public boolean updateBook(Book b, String newAutor);
 	
