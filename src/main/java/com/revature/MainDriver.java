@@ -1,6 +1,7 @@
 package com.revature;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.revature.models.Book;
@@ -15,8 +16,8 @@ import com.revature.service.ServiceLayer;
 
 public class MainDriver {
 	
-	static Set<Book> libraryBooks;
-	static Set<User> userSet;
+	public static Map<String, Book> libraryBooks;
+	public static Set<User> userSet;
 	
 	
 	public static void inialiseValues() {
@@ -31,15 +32,14 @@ public class MainDriver {
 		Book f8 = new Book(0,"Donquiexete 2","FAkeAuthor4",true);
 		
 		
-		libraryBooks.add(f1);
-		libraryBooks.add(f2);
-		libraryBooks.add(f3);
-		libraryBooks.add(f4);
-		libraryBooks.add(f5);
-		libraryBooks.add(f6);
-		libraryBooks.add(f7);
-		libraryBooks.add(f8);
-		
+		libraryBooks.put(f1.getName(), f1);
+		libraryBooks.put(f2.getName(), f2);
+		libraryBooks.put(f3.getName(), f3);
+		libraryBooks.put(f4.getName(), f4);
+		libraryBooks.put(f5.getName(), f5);
+		libraryBooks.put(f6.getName(), f6);
+		libraryBooks.put(f7.getName(), f7);
+		libraryBooks.put(f8.getName(), f8);
 		Set<Book> bobsBooks = new HashSet<>();
 		
 		bobsBooks.add(f2);

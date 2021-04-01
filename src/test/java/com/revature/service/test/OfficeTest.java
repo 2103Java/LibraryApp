@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.revature.MainDriver;
+import com.revature.exceptions.BookDoesNotExistException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -34,7 +36,7 @@ public class OfficeTest {
 	@Test
 	public void testLogin() {
 		
-		o = new Office(ur,br);
+		this.o = new Office(ur,br);
 		
 		User u = new User("Bob", "p4ssw0rd", null);
 		
@@ -84,7 +86,8 @@ public class OfficeTest {
 	}
 	
 	@Test
-	public void testWithdraw() {
+	public void testWithdraw()
+	{
 		
 		/*
 		 * What happens when I withdraw book?
@@ -93,17 +96,107 @@ public class OfficeTest {
 		 * 	Changes the size of the availablebooks list 
 		 * 	User has 1 more book, changes the size of user.getBooks().size();
 		 */
-		
+
+		this.o = new Office(ur,br);
+
+		User u = new User("Bob", "p4ssw0rd", null);
+
+		ur = mock(UserRepo.class);
+
+		when(ur.getUserByUserName("Bob")).thenReturn(u);
+
+		Book book3 = MainDriver.libraryBooks.get("Harry Potter ");
+
+
+		try {
+			assertTrue( o.withdraw(u,book3.getName()));
+		} catch (BookDoesNotExistException e) {
+			e.printStackTrace();
+		}
+		try {
+			assertFalse( o.withdraw(u, "fakebook"));
+		} catch (BookDoesNotExistException e) {
+			e.printStackTrace();
+		}
+		try {
+			assertFalse(o.withdraw(u, "fake book 2"));
+		} catch (BookDoesNotExistException e) {
+			e.printStackTrace();
+		}
+
+
 	}
 	
 	@Test(expected = TooManyBooksAlreadyWithdrawnException.class)
-	public void testTooManyBooks() {
-		
-		throw new TooManyBooksAlreadyWithdrawnException();
+	public void testTooManyBooks() throws BookDoesNotExistException {
+		this.o = new Office(ur,br);
+
+		User u = new User("Bob", "p4ssw0rd", null);
+
+		ur = mock(UserRepo.class);
+
+		when(ur.getUserByUserName("Bob")).thenReturn(u);
+
+		Book book3 = MainDriver.libraryBooks.get("Harry Potter ");
+
+
+//		try {
+//			assertTrue( o.withdraw(u,book3.getName()));
+//		} catch (BookDoesNotExistException e) {
+//			e.printStackTrace();
+//		}
+//		try {
+//			assertFalse( o.withdraw(u, "fakebook"));
+//		} catch (BookDoesNotExistException e) {
+//			e.printStackTrace();
+//		}
+//		try {
+//			assertFalse(o.withdraw(u, "fake book 2"));
+//		} catch (BookDoesNotExistException e) {
+//			e.printStackTrace();
+//		}
+
+		for(Book bk : MainDriver.libraryBooks.values())
+		{
+			o.withdraw(u, bk.getName());
+		}
+
+//		throw new TooManyBooksAlreadyWithdrawnException();
+
+
 		
 	}
-	
-	public void testDeposit() {
-		
+
+	@Test
+	public void testDeposit()
+	{
+
+		/*
+		 * What happens when I withdraw book?
+		 *
+		 * 	It changes the state of the book
+		 * 	Changes the size of the availablebooks list
+		 * 	User has 1 more book, changes the size of user.getBooks().size();
+		 */
+
+		this.o = new Office(ur,br);
+		Book f2 = new Book(0,"Expanse1","FAkeAuthor2",false);
+
+		Set<Book> bkset = new HashSet<>();
+
+		bkset.add(f2);
+
+		User u = new User("Bob", "p4ssw0rd", bkset);
+
+
+		ur = mock(UserRepo.class);
+
+		when(ur.getUserByUserName("Bob")).thenReturn(u);
+
+		for(Book bk: bkset)
+		{
+
+			assertTrue( o.deposit(u,bk.getName()));
+		}
 	}
 }

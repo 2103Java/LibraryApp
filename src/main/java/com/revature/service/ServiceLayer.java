@@ -17,6 +17,6 @@ public interface ServiceLayer{
 
 	boolean withdraw(User loggedInUser, String chosenBook) throws BookDoesNotExistException, TooManyBooksAlreadyWithdrawnException;
 
-	void deposit(User loggedInUser, String depositBook);
+	boolean deposit(User loggedInUser, String depositBook);
 
 }

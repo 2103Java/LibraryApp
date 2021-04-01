@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.util.Map;
 import java.util.Set;
 
 public class User {

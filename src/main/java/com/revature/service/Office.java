@@ -42,13 +42,13 @@ public class Office implements ServiceLayer {
 	public boolean withdraw(User loggedInUser, String chosenBook)
 			throws BookDoesNotExistException, TooManyBooksAlreadyWithdrawnException {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
-	public void deposit(User loggedInUser, String depositBook) {
+	public boolean deposit(User loggedInUser, String depositBook) {
 		// TODO Auto-generated method stub
-
+		return true;
 	}
 
 }
