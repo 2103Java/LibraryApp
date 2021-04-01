@@ -15,7 +15,12 @@ public class BudgetDatabaseUsers implements UserRepo {
 
 	@Override
 	public User getUserByUserName(String username) {
-		// TODO Auto-generated method stub
+		for(User parse: userSet) {
+			if(parse.getUsername().equals(username)) {
+				return parse;
+			}
+		}
+		System.out.println("User DNE");
 		return null;
 	}
 

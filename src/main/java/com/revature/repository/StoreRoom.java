@@ -14,8 +14,12 @@ public class StoreRoom implements BookRepo{
 	}
 
 	@Override
-	public Book getBookByName() {
-		// TODO Auto-generated method stub
+	public Book getBookByName(String name) {
+		for(Book book: libraryBooks) {
+			if(book.getName().equals(name)) {
+				return book;
+			}
+		}
 		return null;
 	}
 
@@ -33,8 +37,7 @@ public class StoreRoom implements BookRepo{
 
 	@Override
 	public Set<Book> getAllBooks() {
-		// TODO Auto-generated method stub
-		return null;
+		return libraryBooks;
 	}
 
 	@Override

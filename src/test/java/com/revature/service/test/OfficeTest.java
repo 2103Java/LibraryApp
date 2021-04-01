@@ -32,17 +32,19 @@ public class OfficeTest {
 	private Office o;
 
 	
-	@Ignore
+	@Test
 	public void testLogin() {
 		
-		o = new Office(ur,br);
+		
 		
 		User u = new User("Bob", "p4ssw0rd", null);
 		
 		ur = mock(UserRepo.class);
 		
 		when(ur.getUserByUserName("Bob")).thenReturn(u);
-		
+
+		o = new Office(ur,br); //Moved the office object declaration to be after we set 
+							   //Mockito variable behavior
 		
 		assertTrue( o.login("Bob", "p4ssw0rd"));
 		assertFalse( o.login("Bob", "password"));
@@ -51,12 +53,15 @@ public class OfficeTest {
 		
 	}
 	
+	@Ignore
 	public void testGetUser() {
 		
 	}
 	
-	@Ignore //feature has been depcreated!
+	@Test //feature has been depcreated!
 	public void testGetAvailableBooks() {
+		br = mock(BookRepo.class);
+		ur = mock(UserRepo.class);
 		
 		Set<Book> fakeSet = new HashSet<>();
 		Book f1 = new Book(0,"Fake1","FAkeAuthor1",true);
@@ -73,18 +78,20 @@ public class OfficeTest {
 		
 		when(br.getAllBooks()).thenReturn(fakeSet);
 		
+		o = new Office(ur,br);
 		
-		assertEquals(3, o.getAvailableBooks());
+		
+		assertEquals(3, o.getAvailableBooks().size()); //added .size() for assertEquals
 		assertTrue(br.getAllBooks().contains(f1));
 		assertTrue(br.getAllBooks().contains(f4));
 		assertTrue(br.getAllBooks().contains(f5));
-		assertFalse(br.getAllBooks().contains(f2));
-		assertFalse(br.getAllBooks().contains(f3));
+		assertFalse(o.getAvailableBooks().contains(f2)); //changed to assert on getAvailableBooks() method not getAllBooks() method
+		assertFalse(o.getAvailableBooks().contains(f3));
 		
 		
 	}
 	
-	@Test
+	@Ignore
 	public void testWithdraw() {
 		
 		/*
@@ -164,7 +171,7 @@ public class OfficeTest {
 
 	}
 	
-	@Test(expected = TooManyBooksAlreadyWithdrawnException.class)
+	@Ignore//(expected = TooManyBooksAlreadyWithdrawnException.class)
 	public void testTooManyBooks() {
 		
 		throw new TooManyBooksAlreadyWithdrawnException();
@@ -172,7 +179,7 @@ public class OfficeTest {
 	}
 	
 	
-	
+	@Ignore
 	public void testDeposit() {
 		
 		o = new Office(ur,br);

@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.revature.exceptions.BookDoesNotExistException;
@@ -22,26 +23,54 @@ public class Office implements ServiceLayer {
 
 	@Override
 	public boolean login(String username, String password) {
-		// TODO Auto-generated method stub
-		return true;
+		User verifyPass = yellowBook.getUserByUserName(username);
+		
+		if(verifyPass == null) {
+			return false;
+		}
+		
+		//What happens if comparing a null value?
+		if(verifyPass.getPassword().equals(password)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 
 	@Override
 	public User getUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return yellowBook.getUserByUserName(username);
 	}
 
 	@Override
 	public Set<Book> getAvailableBooks() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Book> books = stockRoom.getAllBooks();
+		Set<Book> availBooks = new HashSet<>();
+		
+		for(Book book: books) {
+			if(book.isCheckedOut() == true) {
+				availBooks.add(book);
+			}
+		}
+		
+		return availBooks;
 	}
 
 	@Override
 	public boolean withdraw(User loggedInUser, String chosenBook)
 			throws BookDoesNotExistException, TooManyBooksAlreadyWithdrawnException {
-		// TODO Auto-generated method stub
+		
+		if(loggedInUser.getMyBooks().size() < 3) {
+			
+			Set<Book> availBooks = getAvailableBooks();
+			
+			
+		}
+		else {
+			throw new TooManyBooksAlreadyWithdrawnException();
+		}
 		return false;
 	}
 
