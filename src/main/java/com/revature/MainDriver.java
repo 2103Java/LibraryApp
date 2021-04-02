@@ -1,5 +1,7 @@
 package com.revature;
 
+import java.io.*;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -16,12 +18,14 @@ import com.revature.service.ServiceLayer;
 
 public class MainDriver {
 	
-	public static Map<String, Book> libraryBooks;
+	public static Map<String, Book> libraryBooks = new HashMap<>();
 	public static Set<User> userSet;
 	
 	
-	public static void inialiseValues() {
-		
+	public static void inialiseValues() throws IOException {
+		ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream("./libraryBooks.txt"));
+
+
 		Book f1 = new Book(0,"Dune","FAkeAuthor1",true);
 		Book f2 = new Book(0,"Expanse1","FAkeAuthor2",false);
 		Book f3 = new Book(0,"Harry Potter ","FAkeAuthor3",false);
@@ -40,6 +44,9 @@ public class MainDriver {
 		libraryBooks.put(f6.getName(), f6);
 		libraryBooks.put(f7.getName(), f7);
 		libraryBooks.put(f8.getName(), f8);
+
+		objOut.writeObject(libraryBooks);
+
 		Set<Book> bobsBooks = new HashSet<>();
 		
 		bobsBooks.add(f2);
@@ -47,21 +54,29 @@ public class MainDriver {
 		
 		User u = new User("Bob","p4ssw0rd",bobsBooks);
 		User u2 = new User("Frank", "pAssw0rd!", new HashSet<>());
-		
-		
-		
-		
-		
+
 		userSet = new HashSet<>();
 		userSet.add(u);
 		userSet.add(u2);
-		
-		
-		
+
+		ObjectInputStream objInput = new ObjectInputStream(new FileInputStream("./libraryBooks.txt"));
+
+		try {
+			for (Object obj : ((Map) objInput.readObject()).values())
+			System.out.println(obj);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public static void main(String[] args) {
-		
+	public static void main(String[] args)
+	{
+		try {
+			inialiseValues();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		UserRepo ur = new BudgetDatabaseUsers(userSet); //Repo layer
 		BookRepo br = new StoreRoom(libraryBooks);
 		
