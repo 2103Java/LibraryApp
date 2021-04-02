@@ -35,15 +35,19 @@ public class OfficeTest {
 	
 	@Test
 	public void testLogin() {
+		System.out.println("testing login");
+		
+		ur = mock(UserRepo.class);
 		
 		this.o = new Office(ur,br);
 		
 		User u = new User("Bob", "p4ssw0rd", null);
 		
-		ur = mock(UserRepo.class);
+		
 		
 		when(ur.getUserByUserName("Bob")).thenReturn(u);
 		
+		//System.out.println(ur.getUserByUserName("Bob"));
 		
 		assertTrue( o.login("Bob", "p4ssw0rd"));
 		assertFalse( o.login("Bob", "password"));
@@ -88,7 +92,8 @@ public class OfficeTest {
 	@Test
 	public void testWithdraw()
 	{
-		
+
+		MainDriver.inialiseValues();
 		/*
 		 * What happens when I withdraw book?
 		 * 
@@ -97,47 +102,88 @@ public class OfficeTest {
 		 * 	User has 1 more book, changes the size of user.getBooks().size();
 		 */
 
-		this.o = new Office(ur,br);
-
-		User u = new User("Bob", "p4ssw0rd", null);
 
 		ur = mock(UserRepo.class);
-
+		User u = new User("Bob", "p4ssw0rd", null);
 		when(ur.getUserByUserName("Bob")).thenReturn(u);
+		
+		br = mock(BookRepo.class);
 
+		
 		Book book3 = MainDriver.libraryBooks.get("Harry Potter ");
+		when(br.getBookByName("Harry Potter ")).thenReturn(book3);
+		when(br.getBookByName("fakebook")).thenReturn(null);
+		when(br.getBookByName("fake book 2")).thenReturn(null);
+
+		this.o = new Office(ur,br);
+
+		
 
 
 		try {
+
 			assertTrue( o.withdraw(u,book3.getName()));
+
 		} catch (BookDoesNotExistException e) {
+
 			e.printStackTrace();
 		}
 		try {
+
 			assertFalse( o.withdraw(u, "fakebook"));
 		} catch (BookDoesNotExistException e) {
+
 			e.printStackTrace();
 		}
 		try {
+
 			assertFalse(o.withdraw(u, "fake book 2"));
 		} catch (BookDoesNotExistException e) {
+
 			e.printStackTrace();
 		}
+
 
 
 	}
 	
 	@Test(expected = TooManyBooksAlreadyWithdrawnException.class)
 	public void testTooManyBooks() throws BookDoesNotExistException {
+
+		System.out.println("TESTTOOMANYBOOKS start");
+		MainDriver.inialiseValues();
+		Book book1 = new Book(1, "Harry Potter", "J Rowling", true);
+		Book book2 = new Book(1, "Dune", "Nancy", true);
+		Book book3 = new Book(1, "Lord of the Ring", "Frodo", true);		
+		Book book4 = new Book(1, "Chronicles of Narnia", "Nancy", false);
+		
+		Set<Book> booksOfBob = new HashSet<Book>();		
+		booksOfBob.add(book1);
+		booksOfBob.add(book2);
+		booksOfBob.add(book3);
+		
+		Set<Book> allBooks = new HashSet<Book>();
+		allBooks.add(book1);
+		allBooks.add(book2);
+		allBooks.add(book3);
+		allBooks.add(book4);
+		
+		User u = new User("Bob", "p4ssw0rd", booksOfBob);
+		ur = mock(UserRepo.class);
+		br = mock(BookRepo.class);
+		
+		when(ur.getUserByUserName("Bob")).thenReturn(u);
+		when(br.getBookByName("Harry Potter")).thenReturn(book1);
+		when(br.getBookByName("Dune")).thenReturn(book2);
+		when(br.getBookByName("Lord of the Ring")).thenReturn(book3);
+		when(br.getBookByName("Chronicles of Narnia")).thenReturn(book4);
+		
 		this.o = new Office(ur,br);
 
-		User u = new User("Bob", "p4ssw0rd", null);
 
-		ur = mock(UserRepo.class);
+		
 
-		when(ur.getUserByUserName("Bob")).thenReturn(u);
-
-		Book book3 = MainDriver.libraryBooks.get("Harry Potter ");
+		
 
 
 //		try {
@@ -171,6 +217,7 @@ public class OfficeTest {
 	public void testDeposit()
 	{
 
+
 		/*
 		 * What happens when I withdraw book?
 		 *
@@ -179,24 +226,27 @@ public class OfficeTest {
 		 * 	User has 1 more book, changes the size of user.getBooks().size();
 		 */
 
-		this.o = new Office(ur,br);
-		Book f2 = new Book(0,"Expanse1","FAkeAuthor2",false);
-
 		Set<Book> bkset = new HashSet<>();
-
+		Book f2 = new Book(0,"Expanse1","FAkeAuthor2",true);
 		bkset.add(f2);
-
+		
 		User u = new User("Bob", "p4ssw0rd", bkset);
-
-
+		
 		ur = mock(UserRepo.class);
-
+		br = mock(BookRepo.class);
+		
 		when(ur.getUserByUserName("Bob")).thenReturn(u);
+		when(br.getBookByName(f2.getName())).thenReturn(f2);
+
+		
+		this.o = new Office(ur,br);
+		
+
 
 		for(Book bk: bkset)
 		{
-
 			assertTrue( o.deposit(u,bk.getName()));
 		}
+		
 	}
 }

@@ -1,5 +1,6 @@
 package com.revature;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class MainDriver {
 		Book f7 = new Book(0,"Lord of the rings 2","FAkeAuthor3",true);
 		Book f8 = new Book(0,"Donquiexete 2","FAkeAuthor4",true);
 		
-		
+		libraryBooks = new HashMap<String,Book>();
 		libraryBooks.put(f1.getName(), f1);
 		libraryBooks.put(f2.getName(), f2);
 		libraryBooks.put(f3.getName(), f3);
@@ -61,6 +62,8 @@ public class MainDriver {
 	}
 	
 	public static void main(String[] args) {
+		
+		
 		
 		UserRepo ur = new BudgetDatabaseUsers(userSet); //Repo layer
 		BookRepo br = new StoreRoom(libraryBooks);

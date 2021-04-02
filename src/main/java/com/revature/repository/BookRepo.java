@@ -6,7 +6,7 @@ import com.revature.models.Book;
 
 public interface BookRepo {
 	
-	public Book getBookByName();
+	public Book getBookByName(String name);
 	
 	public Book getBookById();
 	

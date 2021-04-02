@@ -15,7 +15,7 @@ public class StoreRoom implements BookRepo{
 	}
 
 	@Override
-	public Book getBookByName() {
+	public Book getBookByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
