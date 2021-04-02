@@ -1,6 +1,8 @@
 package com.revature.models;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
 	
 	//getters and setters
 	//constructor(s)
@@ -61,11 +63,5 @@ public class Book {
 	public String toString() {
 		return "Book [id=" + id + ", name=" + name + ", author=" + author + ", isCheckedOut=" + isCheckedOut + "]";
 	}
-
-	
-	
-	
-	
-	
 
 }
