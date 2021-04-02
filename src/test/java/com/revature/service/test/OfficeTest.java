@@ -133,8 +133,8 @@ public class OfficeTest {
 		User u = new User("bill", "Pass", fakeSetOBooks);
 		//Creating Set for library
 		Set<Book> fakeLibrary = new HashSet<>();
-		//fakeLibrary.add(f1);
-		//fakeLibrary.add(f2);
+		fakeLibrary.add(f1);
+		fakeLibrary.add(f2);
 		fakeLibrary.add(f3);
 		fakeLibrary.add(f4);
 		fakeLibrary.add(f5);

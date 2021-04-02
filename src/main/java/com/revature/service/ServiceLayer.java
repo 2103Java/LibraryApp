@@ -6,6 +6,8 @@ import com.revature.exceptions.BookDoesNotExistException;
 import com.revature.exceptions.TooManyBooksAlreadyWithdrawnException;
 import com.revature.models.Book;
 import com.revature.models.User;
+import com.revature.repository.BudgetDatabaseUsers;
+import com.revature.repository.StoreRoom;
 
 public interface ServiceLayer{
 
@@ -18,5 +20,9 @@ public interface ServiceLayer{
 	boolean withdraw(User loggedInUser, String chosenBook) throws BookDoesNotExistException, TooManyBooksAlreadyWithdrawnException;
 
 	void deposit(User loggedInUser, String depositBook);
+
+	void WriteReposToFile(StoreRoom br, BudgetDatabaseUsers ur);
+
+	void ReadReposFromFile();
 
 }

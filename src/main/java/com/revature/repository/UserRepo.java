@@ -11,6 +11,8 @@ public interface UserRepo {
 	
 	public boolean addUser(String username, String password, Set<Book> myBooks);
 	//public deleteUser(User u)
+
+	public Object getAllUsers();
 	
 
 

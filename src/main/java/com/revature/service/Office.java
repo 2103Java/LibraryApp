@@ -1,5 +1,10 @@
 package com.revature.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Set;
 
 import com.revature.exceptions.BookDoesNotExistException;
@@ -76,5 +81,36 @@ public class Office implements ServiceLayer {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void WriteReposToFile(StoreRoom books, BudgetDatabaseUsers users) {
+		try{
+			FileOutputStream bookStream = new FileOutputStream(new File("./SerialBooks.txt"));
+			ObjectOutputStream ostream = new ObjectOutputStream(bookStream);
+						
+			//for(Book book:bookSetTest) {
+				ostream.writeObject(books.getAllBooks());
+			//}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void ReadReposFromFile() {
+		try{
+			FileInputStream bookStream = new FileInputStream(new File("./SerialBooks.txt"));
+			ObjectInputStream ostream = new ObjectInputStream(bookStream);
+						
+			//for(Book book:bookSetTest) {
+				System.out.println(ostream.readObject());
+			//}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }

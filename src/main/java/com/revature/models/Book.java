@@ -1,11 +1,18 @@
 package com.revature.models;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable{
 	
 	//getters and setters
 	//constructor(s)
 	//toString()
 	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 246222916477619407L;
 	
 	private int id;
 	private String name;

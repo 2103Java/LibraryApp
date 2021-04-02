@@ -19,7 +19,10 @@ public class MainDriver {
 	static Set<User> userSet;
 	
 	
-	public static void inialiseValues() {
+	public static void initaliseValues() {
+		
+		libraryBooks = new HashSet<Book>();
+		userSet = new HashSet<User>();
 		
 		Book f1 = new Book(0,"Dune","FAkeAuthor1",true);
 		Book f2 = new Book(0,"Expanse1","FAkeAuthor2",false);
@@ -52,7 +55,6 @@ public class MainDriver {
 		
 		
 		
-		userSet = new HashSet<>();
 		userSet.add(u);
 		userSet.add(u2);
 		
@@ -62,13 +64,18 @@ public class MainDriver {
 	
 	public static void main(String[] args) {
 		
-		UserRepo ur = new BudgetDatabaseUsers(userSet); //Repo layer
-		BookRepo br = new StoreRoom(libraryBooks);
+		initaliseValues();
+		
+		BudgetDatabaseUsers ur = new BudgetDatabaseUsers(userSet); //Repo layer
+		StoreRoom br = new StoreRoom(libraryBooks);
 		
 		ServiceLayer office = new Office(ur,br); //service layer 
 		
 		FrontOffice fo = new FrontOffice(office); //presentation layer
 		
+		
+		office.WriteReposToFile(br, ur);
+		office.ReadReposFromFile();
 		
 	}
 
