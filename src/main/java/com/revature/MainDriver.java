@@ -1,74 +1,122 @@
 package com.revature;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
+import com.revature.comparator.AuthorSorting;
 import com.revature.models.Book;
 import com.revature.models.User;
-import com.revature.presentation.FrontOffice;
-import com.revature.repository.BookRepo;
-import com.revature.repository.BudgetDatabaseUsers;
-import com.revature.repository.StoreRoom;
-import com.revature.repository.UserRepo;
-import com.revature.service.Office;
-import com.revature.service.ServiceLayer;
 
 public class MainDriver {
 	
-	static Set<Book> libraryBooks;
-	static Set<User> userSet;
+	static Set<Book> libraryBooks = new HashSet<>();
+	static Set<User> userSet = new HashSet<>();
 	
 	
 	public static void inialiseValues() {
-		
-		Book f1 = new Book(0,"Dune","FAkeAuthor1",true);
-		Book f2 = new Book(0,"Expanse1","FAkeAuthor2",false);
-		Book f3 = new Book(0,"Harry Potter ","FAkeAuthor3",false);
-		Book f4 = new Book(0,"Lord of the rings","FAkeAuthor3",true);
-		Book f5 = new Book(0,"Donquiexete 2","FAkeAuthor4",true);
-		Book f6 = new Book(0,"Harry Potter 2 ","FAkeAuthor3",true);
-		Book f7 = new Book(0,"Lord of the rings 2","FAkeAuthor3",true);
-		Book f8 = new Book(0,"Donquiexete 2","FAkeAuthor4",true);
-		
-		
-		libraryBooks.add(f1);
-		libraryBooks.add(f2);
-		libraryBooks.add(f3);
-		libraryBooks.add(f4);
-		libraryBooks.add(f5);
-		libraryBooks.add(f6);
-		libraryBooks.add(f7);
-		libraryBooks.add(f8);
-		
-		Set<Book> bobsBooks = new HashSet<>();
-		
-		bobsBooks.add(f2);
-		bobsBooks.add(f3);
-		
-		User u = new User("Bob","p4ssw0rd",bobsBooks);
-		User u2 = new User("Frank", "pAssw0rd!", new HashSet<>());
-		
-		
-		
-		
-		
-		userSet = new HashSet<>();
-		userSet.add(u);
-		userSet.add(u2);
-		
-		
+	
 		
 	}
 	
+	public final static Logger loggy = Logger.getLogger(MainDriver.class);
+	
 	public static void main(String[] args) {
 		
-		UserRepo ur = new BudgetDatabaseUsers(userSet); //Repo layer
-		BookRepo br = new StoreRoom(libraryBooks);
+		inialiseValues(); //this is grabbing data from a file
+//		
+//		UserRepo ur = new BudgetDatabaseUsers(userSet); //Repo layer
+//		BookRepo br = new StoreRoom(libraryBooks);
+//		
+//		ServiceLayer office = new Office(ur,br); //service layer 
+//		
+//		FrontOffice fo = new FrontOffice(office); //presentation layer
+//		
+//		loggy.fatal("Application has started up!");
+//		
+//		fo.displayMenu();
 		
-		ServiceLayer office = new Office(ur,br); //service layer 
+		persistValues();
 		
-		FrontOffice fo = new FrontOffice(office); //presentation layer
+//		-------------------------Showing off Comparator and Comparable-------------------------
 		
+		List<Book> toBeSorted = new ArrayList<>();
+		
+		toBeSorted.addAll(libraryBooks);
+		
+		AuthorSorting as = new AuthorSorting();
+		
+
+		
+		for(Book b: libraryBooks) {
+			System.out.println(b.getName() + "|" + b.getAuthor());
+		}
+		
+		System.out.println("-------------------------------");
+		
+//		Collections.sort(toBeSorted);
+		
+		for(Book b: toBeSorted) {
+			System.out.println(b.getName() + "|" + b.getAuthor());
+		}
+		
+		
+		Collections.sort(toBeSorted,as); // Collections (utility class that has useful methods) vs Collection API
+		
+		
+		System.out.println("-------------------------------");
+		
+		for(Book b: toBeSorted) {
+			System.out.println(b.getName() + "|" + b.getAuthor());
+		}
+
+		
+		System.out.println("---------------------------------");
+		
+		//This is an example of a lambda expression 
+		// We don't need to instantiate an entire class to implement a sinlge method!
+		// (functional style of programming)
+		Comparator<Book> compareId = (Book o1,Book o2) -> {
+			
+			int value;
+			
+				if(o1.getId() > o2.getId()) {
+					value = 1;
+				}else if(o1.getId() < o2.getId()) {
+					value = -1;
+				}else {
+					value = 0;
+				}
+			return value;
+			
+		};
+		
+		Comparator<User> compareUserUSername = (User o1,User o2) -> {
+			
+			int value;
+			
+				if(o1.getUsername().compareTo(o2.getUsername()) > 0) {
+					value = 1;
+				}else if(o1.getUsername().compareTo(o2.getUsername()) < 0) {
+					value = -1;
+				}else {
+					value = 0;
+				}
+			return value;
+			
+		};
+		
+		
+		Collections.sort(toBeSorted, compareId);
+		
+		for(Book b: toBeSorted) {
+			System.out.println(b.getName() + "|" + b.getAuthor());
+		}
 		
 	}
 

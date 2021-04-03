@@ -1,8 +1,15 @@
 package com.revature.presentation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
+import com.revature.MainDriver;
 import com.revature.exceptions.BookDoesNotExistException;
 import com.revature.models.Book;
 import com.revature.models.User;
@@ -11,6 +18,8 @@ import com.revature.service.ServiceLayer;
 public class FrontOffice implements PresentationLayer {
 	
 	ServiceLayer sLayer;
+	
+	final static Logger loggy = Logger.getLogger(FrontOffice.class);
 	
 	public FrontOffice(ServiceLayer office) {
 		this.sLayer = office;
@@ -28,6 +37,8 @@ public class FrontOffice implements PresentationLayer {
 		
 		while(using) {
 			
+			MainDriver.loggy.info("User is attempting to login");
+			
 			System.out.println("Input username");
 			String username = sc.nextLine();
 			
@@ -37,6 +48,8 @@ public class FrontOffice implements PresentationLayer {
 			
 			
 			if(sLayer.login(username,password)) {
+				
+				loggy.info("User has logged in");
 				
 				User loggedInUser = sLayer.getUser(username);
 				
@@ -80,6 +93,32 @@ public class FrontOffice implements PresentationLayer {
 						
 						displayBooks(libraryBooks);
 						
+						System.out.println("Would you like to see it in alphabetical order?");
+						
+						String sortYes = sc.nextLine();
+						
+						if(sortYes.equals("Name")) {
+							
+							List<Book> sortedBooks = new ArrayList<>();
+							sortedBooks.addAll(libraryBooks);
+							
+							Collections.sort(sortedBooks);
+							
+							displayBooks(libraryBooks);
+							
+						}else if(sortYes.equals("Author")) {
+							List<Book> sortedBooks = new ArrayList<>();
+							sortedBooks.addAll(libraryBooks);
+							
+							Comparator<Book> authors = (Book b1, Book b2) ->{
+								return b1.getAuthor().compareTo(b2.getAuthor());
+							};
+							
+							Collections.sort(sortedBooks,authors);
+							
+							displayBooks(libraryBooks);
+						}
+						
 						break;
 						
 					case 3: //withdrawing the books!
@@ -93,6 +132,9 @@ public class FrontOffice implements PresentationLayer {
 						try {
 							sLayer.withdraw(loggedInUser, chosenBook);
 						} catch(BookDoesNotExistException e) {
+							
+							loggy.error("User trys to withdraw a book " + chosenBook + " that doesn't exist");
+							
 							System.out.println("Book does not exist!");
 						}
 						break;
@@ -125,6 +167,8 @@ public class FrontOffice implements PresentationLayer {
 				}
 	
 			}else {
+				
+				loggy.warn("User is unable to login");
 				
 				//failed login method!
 				
