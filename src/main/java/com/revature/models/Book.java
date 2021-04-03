@@ -1,6 +1,8 @@
 package com.revature.models;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
 	
 	//getters and setters
 	//constructor(s)
